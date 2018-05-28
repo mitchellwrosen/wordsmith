@@ -1,0 +1,6 @@
+.ghc.environment.*
+.ghci
+.shake/
+bin/
+dist/
+dist-newstyle/

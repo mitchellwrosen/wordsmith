@@ -1,0 +1,4 @@
+packages:
+    .,
+    deps/mitchell-stdlib,
+    shakefile

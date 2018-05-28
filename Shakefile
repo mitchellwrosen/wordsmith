@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+SHAKEFILE=./.shake/shake
+
+if [ -x "$SHAKEFILE" ]; then
+  "$SHAKEFILE" "$@"
+else
+  mkdir -p .shake
+  if [ ! -f wordsmith.cabal ]; then
+    dhall-to-text <<< ./wordsmith.cabal.dhall > wordsmith.cabal
+  fi
+  cabal new-build shakefile
+  cp $(cabal-plan list-bin wordsmith-shakefile) "$SHAKEFILE"
+  exec ./Shakefile
+fi

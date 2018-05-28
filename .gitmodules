@@ -1,0 +1,6 @@
+[submodule "deps/dhall"]
+	path = deps/dhall
+	url = https://github.com/dhall-lang/Prelude
+[submodule "deps/mitchell-stdlib"]
+	path = deps/mitchell-stdlib
+	url = https://github.com/mitchellwrosen/mitchell-stdlib
