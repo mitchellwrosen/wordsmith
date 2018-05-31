@@ -115,22 +115,27 @@ name: wordsmith
 tested-with: GHC == 8.4.2
 version: 0.1.0
 
-library
-  build-depends:
-      mitchell-stdlib
-  default-extensions: ${default-extensions}
-  if impl(ghc >= 8.4.2)
-    default-extensions: ${default-extensions-8-4-2}
-  default-language: Haskell2010
-  -- exposed-modules:
-  ghc-options: ${ghc-options}
-  if impl(ghc >= 8.4.2)
-    ghc-options: ${ghc-options-8-4-2}
-  hs-source-dirs: src
+-- library
+--   build-depends:
+--       mitchell-stdlib
+--   default-extensions: ${default-extensions}
+--   if impl(ghc >= 8.4.2)
+--     default-extensions: ${default-extensions-8-4-2}
+--   default-language: Haskell2010
+--   -- exposed-modules:
+--   ghc-options: ${ghc-options}
+--   if impl(ghc >= 8.4.2)
+--     ghc-options: ${ghc-options-8-4-2}
+--   hs-source-dirs: src
 
 executable wordsmith
   build-depends:
-      mitchell-stdlib
+      bytestring
+    , mitchell-stdlib
+    , random-shuffle
+    , text
+    , unix
+    , vty
   default-extensions: ${default-extensions}
   if impl(ghc >= 8.4.2)
     default-extensions: ${default-extensions-8-4-2}

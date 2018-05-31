@@ -4,7 +4,7 @@ name: wordsmith-shakefile
 version: 0
 
 executable wordsmith-shakefile
-  build-depends: base, process, shake
+  build-depends: mitchell-stdlib, shake, unix
   default-language: Haskell2010
   ghc-options: -Wall -threaded -rtsopts
   main-is: Main.hs

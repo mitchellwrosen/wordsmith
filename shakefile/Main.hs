@@ -1,18 +1,37 @@
+{-# language LambdaCase #-}
+{-# language NoImplicitPrelude #-}
+{-# language ScopedTypeVariables #-}
+
+import Mitchell
+
 import Development.Shake
-import System.Process (callCommand)
+import Environment (getEnvironment)
+import Exception
+import List (String)
+import Process (executeFile, runProcess, runProcess_, shell)
+import System.Posix.Signals (sigUSR1)
 
 main :: IO ()
 main =
   shakeArgs shakeOptions $ do
     phony "run" $ do
       need ["wordsmith.cabal"]
-      runAfter (callCommand "cabal new-run exe:wordsmith")
+      runAfter $
+        runProcess (shell "cabal new-run exe:wordsmith") >>= \case
+          ExitFailure code
+            | code == fromIntegral (-sigUSR1) -> do
+                env <- getEnvironment
+                executeFile "./Shakefile" False ["run"] (Just env)
+            | otherwise ->
+                throwIO (ExitFailure code)
+          ExitSuccess ->
+            pure ()
 
     phony "dev" $ do
       need ["wordsmith.cabal"]
       runAfter $
-        callCommand
-          "ghcid -c 'cabal new-repl lib:wordsmith' --restart cabal.project --restart wordsmith.cabal"
+        runProcess_ (shell
+          "ghcid -c 'cabal new-repl exe:wordsmith' --restart cabal.project --restart wordsmith.cabal -T 'sendSIGUSR1' -W")
 
     want ["bin/wordsmith"]
 
@@ -27,6 +46,6 @@ main =
     "wordsmith.cabal" %> \out -> do
       need ["wordsmith.cabal.dhall"]
       cmd_
-        (FileStdin "wordsmith.cabal.dhall")
+        (Stdin "./wordsmith.cabal.dhall")
         (FileStdout out)
         "dhall-to-text"

@@ -1,4 +1,21 @@
 packages:
     .,
-    deps/mitchell-stdlib,
+    /home/mitchell/haskell/mitchell-stdlib
+    -- deps/mitchell-stdlib,
     shakefile
+
+package mitchell-stdlib
+  flags:
+    +dep-async
+    +dep-bytestring-trie
+    +dep-deepseq
+    +dep-directory
+    +dep-extra
+    +dep-managed
+    +dep-mwc-random
+    +dep-reactive-banana
+    +dep-safe-exceptions
+    +dep-stm
+    +dep-typed-process
+    +dep-unix
+    +mitchell
